@@ -2,74 +2,160 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ruel AI Video Studio</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101010;color:#fff;font-family:Arial,sans-serif}
-header{padding:22px 7%;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center}
-.logo{color:#e8bd62;font-size:22px;font-weight:bold}
-main{max-width:1100px;margin:auto;padding:40px 22px}
-h1{font-size:36px;margin-bottom:8px}
+body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
+header{padding:20px 6%;border-bottom:1px solid #39332a;display:flex;justify-content:space-between;align-items:center}
+.logo{color:#e8bd62;font-size:21px;font-weight:bold}
+main{max-width:1100px;margin:auto;padding:35px 20px}
 .gold{color:#e8bd62}
+.card{background:#1d1d1d;border:1px solid #453a29;border-radius:14px;padding:22px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+h1{font-size:35px}
 p{color:#aaa;line-height:1.6}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:30px}
-.card{background:#1c1c1c;border:1px solid #39332a;border-radius:14px;padding:23px}
-.card h3{color:#e8bd62}
-button{background:#d5aa50;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
-.card button{width:100%;margin-top:12px}
-.hero{background:linear-gradient(120deg,#282016,#171717);padding:30px;border-radius:16px;border:1px solid #5b4625;margin-top:30px}
+button{background:#d5aa50;color:#111;border:0;border-radius:8px;padding:12px 17px;font-weight:bold;cursor:pointer}
+input{width:100%;padding:14px;margin:8px 0 15px;background:#111;color:white;border:1px solid #555;border-radius:8px}
+#account{display:none}
+#auth{max-width:440px;margin:35px auto}
+#message{color:#e8bd62;overflow-wrap:anywhere}
 footer{text-align:center;padding:30px;color:#777}
 </style>
 </head>
 <body>
 <header>
 <div class="logo">✦ RUEL AI STUDIO</div>
-<div class="gold">VIDEO CREATOR PRO</div>
+<button id="logout" onclick="signOut()" style="display:none">Log Out</button>
 </header>
-<main>
-<p class="gold">YOUR PERSONAL AI CREATIVE PLATFORM</p>
-<h1>Create Amazing Videos with <span class="gold">AI.</span></h1>
-<p>Generate scripts, create AI presenters, produce voiceovers and build professional videos in one workspace.</p>
 
-<div class="hero">
-<h2>Welcome to Ruel AI Video Studio!</h2>
-<p>Your creative journey starts here. Turn your ideas into professional videos.</p>
-<button onclick="alert('AI Script Studio is coming soon!')">Start Creating</button>
+<main>
+<div id="auth">
+<h1 class="gold">Welcome to Ruel AI Studio</h1>
+<p>Create your account or sign in to access your AI creative workspace.</p>
+<div class="card">
+<h2 id="formTitle">Create Account</h2>
+<form id="authForm">
+<label>Email Address</label>
+<input id="email" type="email" placeholder="Enter your email" required>
+<label>Password</label>
+<input id="password" type="password" placeholder="Minimum 6 characters" minlength="6" required>
+<button id="submitBtn" type="submit">Create Account</button>
+</form>
+<p id="message"></p>
+<button onclick="toggleMode()" style="background:transparent;color:#e8bd62;padding-left:0">
+Already have an account? Sign In
+</button>
+</div>
 </div>
 
-<h2 style="margin-top:40px">Creative Studio</h2>
+<div id="account">
+<p class="gold">YOUR PERSONAL AI CREATIVE PLATFORM</p>
+<h1>Create Amazing Videos with AI.</h1>
+<p>Welcome to your creative workspace.</p>
+<div class="card">
+<h2 class="gold">Your Account</h2>
+<p>Signed in as: <strong id="userEmail"></strong></p>
+</div>
+<h2>Creative Studio</h2>
 <div class="grid">
-<div class="card"><h3>✍ AI Script Writer</h3><p>Create hooks, scripts and captions.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>🎭 AI Presenter</h3><p>Create videos with realistic talking avatars.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>🎙 AI Voice Studio</h3><p>Generate professional voiceovers.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>🎬 Text to Video</h3><p>Turn text prompts into video content.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>🖼 Image to Video</h3><p>Bring your photos to life.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>✂ Video Editor</h3><p>Combine clips, audio and subtitles.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>📁 My Projects</h3><p>Manage your video projects.</p><button onclick="coming()">Open Studio</button></div>
-<div class="card"><h3>⬇ Export Center</h3><p>Prepare your completed videos.</p><button onclick="coming()">Open Studio</button></div>
+<div class="card"><h3 class="gold">✍ AI Script Writer</h3><p>Generate scripts, hooks and captions.</p></div>
+<div class="card"><h3 class="gold">🎭 AI Presenter</h3><p>Create talking avatar videos.</p></div>
+<div class="card"><h3 class="gold">🎙 AI Voice Studio</h3><p>Create professional voiceovers.</p></div>
+<div class="card"><h3 class="gold">🎬 Text to Video</h3><p>Turn prompts into videos.</p></div>
+<div class="card"><h3 class="gold">🖼 Image to Video</h3><p>Animate your photos.</p></div>
+<div class="card"><h3 class="gold">✂ Video Editor</h3><p>Combine clips and subtitles.</p></div>
+<div class="card"><h3 class="gold">📁 My Projects</h3><p>Your video project workspace.</p></div>
+<div class="card"><h3 class="gold">⬇ Export Center</h3><p>Prepare videos for download.</p></div>
+</div>
 </div>
 </main>
-<footer>© 2026 Ruel AI Video Studio | Powered by Creativity</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<footer>© 2026 Ruel AI Video Studio</footer>
 
 <script>
 const SUPABASE_URL = "https://eydaaktlejeovwwkkcrn.supabase.co";
-
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_sMd7cHjb-zwW7UhXdZro3A_J3-yOcXp";
 
-const supabaseClient = window.supabase.createClient(
+const client = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
 
-function coming(){
-  alert("This feature is under development. Stay tuned!");
+let isLogin = false;
+
+function toggleMode(){
+  isLogin = !isLogin;
+  document.getElementById("formTitle").textContent =
+    isLogin ? "Sign In" : "Create Account";
+  document.getElementById("submitBtn").textContent =
+    isLogin ? "Sign In" : "Create Account";
+  document.querySelector("#auth button[onclick='toggleMode()']").textContent =
+    isLogin ? "Need an account? Register" : "Already have an account? Sign In";
+  document.getElementById("message").textContent = "";
 }
 
-console.log("Ruel AI Video Studio connected to Supabase!");
-</script>
+document.getElementById("authForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const message = document.getElementById("message");
+  const btn = document.getElementById("submitBtn");
 
+  btn.disabled = true;
+  message.textContent = "Please wait...";
+
+  let result;
+
+  if(isLogin){
+    result = await client.auth.signInWithPassword({email,password});
+  }else{
+    result = await client.auth.signUp({
+      email,
+      password,
+      options:{
+        emailRedirectTo: location.origin + location.pathname
+      }
+    });
+  }
+
+  btn.disabled = false;
+
+  if(result.error){
+    message.textContent = result.error.message;
+  }else if(!isLogin && !result.data.session){
+    message.textContent = "Registration successful! Please check your email to confirm your account.";
+  }else{
+    message.textContent = "Success!";
+  }
+});
+
+async function signOut(){
+  const {error} = await client.auth.signOut();
+  if(error) alert(error.message);
+}
+
+function showAccount(session){
+  document.getElementById("auth").style.display =
+    session ? "none" : "block";
+  document.getElementById("account").style.display =
+    session ? "block" : "none";
+  document.getElementById("logout").style.display =
+    session ? "block" : "none";
+
+  if(session){
+    document.getElementById("userEmail").textContent =
+      session.user.email;
+  }
+}
+
+client.auth.onAuthStateChange((event, session)=>{
+  showAccount(session);
+});
+
+client.auth.getSession().then(({data})=>{
+  showAccount(data.session);
+});
+</script>
 </body>
 </html>
