@@ -193,6 +193,41 @@ client.auth.onAuthStateChange((event, session)=>{
 client.auth.getSession().then(({data})=>{
   showAccount(data.session);
 });
+
+async function generateScript() {
+  const topic = document.getElementById("videoTopic").value.trim();
+  const style = document.getElementById("videoStyle").value;
+  const duration = document.getElementById("videoDuration").value;
+  const platform = document.getElementById("videoPlatform").value;
+
+  const status = document.getElementById("scriptStatus");
+  const resultBox = document.getElementById("scriptResult");
+
+  if (!topic) {
+    status.textContent = "Please enter your video topic.";
+    return;
+  }
+
+  status.textContent = "Generating your AI script... Please wait.";
+  resultBox.textContent = "";
+
+  try {
+    const { data, error } = await client.functions.invoke(
+      "smooth-function",
+      {
+        body: { topic, style, duration, platform }
+      }
+    );
+
+    if (error) throw error;
+    if (data.error) throw new Error(data.error);
+
+    resultBox.textContent = data.result;
+    status.textContent = "Your AI script is ready!";
+  } catch (error) {
+    status.textContent = "Generation failed: " + error.message;
+  }
+}  
 </script>
 </body>
 </html>
