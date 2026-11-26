@@ -59,6 +59,43 @@ Already have an account? Sign In
 <p>Signed in as: <strong id="userEmail"></strong></p>
 </div>
 <h2>Creative Studio</h2>
+
+<div class="card">
+  <h2 class="gold">✍ AI Script Writer</h2>
+  <p>Generate professional video scripts using AI.</p>
+
+  <label>Video Topic</label>
+  <input id="videoTopic" placeholder="Example: Promote Sanremo Oasis Cebu">
+
+  <label>Video Style</label>
+  <select id="videoStyle">
+    <option>Professional and engaging</option>
+    <option>Luxury and cinematic</option>
+    <option>Friendly and conversational</option>
+    <option>Educational</option>
+    <option>Inspirational</option>
+  </select>
+
+  <label>Video Duration</label>
+  <select id="videoDuration">
+    <option>30 seconds</option>
+    <option>45 seconds</option>
+    <option>60 seconds</option>
+  </select>
+
+  <label>Platform</label>
+  <select id="videoPlatform">
+    <option>Facebook Reels</option>
+    <option>TikTok</option>
+    <option>YouTube Shorts</option>
+    <option>Instagram Reels</option>
+  </select>
+
+  <button onclick="generateScript()">Generate AI Script</button>
+
+  <p id="scriptStatus"></p>
+  <div id="scriptResult" style="white-space:pre-wrap;line-height:1.7"></div>
+</div>
 <div class="grid">
 <div class="card"><h3 class="gold">✍ AI Script Writer</h3><p>Generate scripts, hooks and captions.</p></div>
 <div class="card"><h3 class="gold">🎭 AI Presenter</h3><p>Create talking avatar videos.</p></div>
