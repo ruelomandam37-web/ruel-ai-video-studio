@@ -224,10 +224,24 @@ async function generateScript() {
 
     resultBox.textContent = data.result;
     status.textContent = "Your AI script is ready!";
+    
   } catch (error) {
-    status.textContent = "Generation failed: " + error.message;
+    console.error("Script generation error:", error);
+
+    let message = error.message;
+
+    if (error.context) {
+      try {
+        const details = await error.context.json();
+        message = details.error || details.message || message;
+      } catch (e) {
+        message = error.message;
+      }
+    }
+
+    status.textContent = "AI Error: " + message;
   }
-}  
+}
 </script>
 </body>
 </html>
